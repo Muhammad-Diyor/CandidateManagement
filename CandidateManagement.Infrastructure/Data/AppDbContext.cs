@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CandidateManagement.Domain.Entities;
+﻿using CandidateManagement.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CandidateManagement.Infrastructure.Data;
 
@@ -15,4 +15,3 @@ public class AppDbContext : DbContext
             .IsUnique();
     }
 }
-    

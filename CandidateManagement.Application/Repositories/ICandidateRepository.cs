@@ -5,5 +5,6 @@ namespace CandidateManagement.Application.Repositories;
 public interface ICandidateRepository
 {
     Task<Candidate?> GetByEmailAsync(string email);
-    Task AddOrUpdateAsync(Candidate candidate);
+    Task AddCandidateAsync(Candidate candidate);
+    Task UpdateCandidateAsync(Candidate candidate);
 }

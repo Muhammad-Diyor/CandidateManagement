@@ -16,21 +16,19 @@ public class CandidateRepository : ICandidateRepository
 
     public async Task<Candidate?> GetByEmailAsync(string email)
     {
-        return await _context.Candidates.FirstOrDefaultAsync(c => c.Email == email);
+        return await _context.Candidates.AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Email == email);
     }
 
-    public async Task AddOrUpdateAsync(Candidate candidate)
+    public async Task AddCandidateAsync(Candidate candidate)
     {
-        var existingCandidate = await GetByEmailAsync(candidate.Email);
-        if (existingCandidate != null)
-        {
-            _context.Entry(existingCandidate).CurrentValues.SetValues(candidate);
-        }
-        else
-        {
-            await _context.Candidates.AddAsync(candidate);
-        }
+        await _context.Candidates.AddAsync(candidate);
+        await _context.SaveChangesAsync();
+    }
 
+    public async Task UpdateCandidateAsync(Candidate candidate)
+    {
+        _context.Candidates.Update(candidate);
         await _context.SaveChangesAsync();
     }
 }

@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CandidateManagement.Domain\CandidateManagement.Domain.csproj" />
-    <ProjectReference Include="..\CandidateManagement.Infrastructure\CandidateManagement.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

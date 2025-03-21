@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CandidateManagement.Application\CandidateManagement.Application.csproj" />
+    <ProjectReference Include="..\CandidateManagement.Infrastructure\CandidateManagement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

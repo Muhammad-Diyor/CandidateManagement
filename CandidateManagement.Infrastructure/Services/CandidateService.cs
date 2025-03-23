@@ -19,14 +19,15 @@ public class CandidateService : ICandidateService
 
         if (existingCandidate != null)
         {
-            existingCandidate.FirstName = dto.FirstName;
-            existingCandidate.LastName = dto.LastName;
-            existingCandidate.PhoneNumber = dto.PhoneNumber;
-            existingCandidate.CallStartTime = TimeOnly.Parse(dto.CallStartTime);
-            existingCandidate.CallEndTime = TimeOnly.Parse(dto.CallEndTime);
-            existingCandidate.LinkedInUrl = dto.LinkedInUrl;
-            existingCandidate.GitHubUrl = dto.GitHubUrl;
-            existingCandidate.Comment = dto.Comment;
+            existingCandidate.FirstName = string.IsNullOrWhiteSpace(dto.FirstName) ? existingCandidate.FirstName : dto.FirstName;
+            existingCandidate.LastName = string.IsNullOrWhiteSpace(dto.LastName) ? existingCandidate.LastName : dto.LastName;
+            existingCandidate.PhoneNumber = string.IsNullOrWhiteSpace(dto.PhoneNumber) ? existingCandidate.PhoneNumber : dto.PhoneNumber;
+            existingCandidate.CallStartTime = string.IsNullOrWhiteSpace(dto.CallStartTime) ? existingCandidate.CallStartTime : TimeOnly.Parse(dto.CallStartTime);
+            existingCandidate.CallEndTime = string.IsNullOrWhiteSpace(dto.CallEndTime) ? existingCandidate.CallEndTime : TimeOnly.Parse(dto.CallEndTime);
+            existingCandidate.LinkedInUrl = string.IsNullOrWhiteSpace(dto.LinkedInUrl) ? existingCandidate.LinkedInUrl : dto.LinkedInUrl;
+            existingCandidate.GitHubUrl = string.IsNullOrWhiteSpace(dto.GitHubUrl) ? existingCandidate.GitHubUrl : dto.GitHubUrl;
+            existingCandidate.Comment = string.IsNullOrWhiteSpace(dto.Comment) ? existingCandidate.Comment : dto.Comment;
+
 
             await _candidateRepository.UpdateCandidateAsync(existingCandidate);
             return existingCandidate;

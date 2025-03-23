@@ -1,3 +1,4 @@
+using CandidateManagement.API.Middleware;
 using CandidateManagement.Application.Repositories;
 using CandidateManagement.Application.Services;
 using CandidateManagement.Infrastructure.Data;
@@ -28,7 +29,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.MapControllers();
 
 app.Run();

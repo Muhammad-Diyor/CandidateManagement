@@ -65,12 +65,7 @@ public class CandidateService : ICandidateService
         // Step 2: If not in cache, retrieve from database
         if (existingCandidate == null)
         {
-            Console.WriteLine("Candidate not found in cache, querying database");
             existingCandidate = await _candidateRepository.GetByEmailAsync(dto.Email);
-        }
-        else 
-        {
-            Console.WriteLine("Candidate retrieved from cache");
         }
 
         // Existing candidate update logic

@@ -1,3 +1,5 @@
+#region usings
+
 using CandidateManagement.API.Middleware;
 using CandidateManagement.API.Validators;
 using CandidateManagement.Application.Caching;
@@ -10,27 +12,23 @@ using CandidateManagement.Infrastructure.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using StackExchange.Redis;
+
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-{
-    var configuration = ConfigurationOptions.Parse("localhost:6379", true);
-    return ConnectionMultiplexer.Connect(configuration);
-});
-
-
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMemoryCache();
 
 builder.Services.AddValidatorsFromAssemblyContaining<CandidateDtoValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 
-builder.Services.AddScoped<ICacheService, RedisCacheService>();
+builder.Services.AddScoped<ICacheService, InMemoryCacheService>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
 builder.Services.AddScoped<ICandidateService, CandidateService>();
 

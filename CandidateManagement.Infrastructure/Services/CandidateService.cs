@@ -1,4 +1,5 @@
-﻿using CandidateManagement.Application.DTOs;
+﻿using CandidateManagement.Application.Caching;
+using CandidateManagement.Application.DTOs;
 using CandidateManagement.Application.Repositories;
 using CandidateManagement.Domain.Entities;
 using CandidateManagement.Application.Services;
@@ -7,15 +8,23 @@ namespace CandidateManagement.Infrastructure.Services;
 public class CandidateService : ICandidateService
 {
     private readonly ICandidateRepository _candidateRepository;
+    private readonly ICacheService _cacheService;
 
-    public CandidateService(ICandidateRepository candidateRepository)
+
+    public CandidateService(ICandidateRepository candidateRepository, ICacheService cacheService)
     {
         _candidateRepository = candidateRepository;
+        _cacheService = cacheService;
     }
 
     public async Task<Candidate> AddOrUpdateCandidateAsync(CandidateDto dto)
     {
-        var existingCandidate = await _candidateRepository.GetByEmailAsync(dto.Email);
+        var existingCandidate = await _cacheService.GetAsync<Candidate>(dto.Email);
+
+        if (existingCandidate == null)
+        {
+            existingCandidate = await _candidateRepository.GetByEmailAsync(dto.Email);
+        }
 
         if (existingCandidate != null)
         {
@@ -30,6 +39,7 @@ public class CandidateService : ICandidateService
 
 
             await _candidateRepository.UpdateCandidateAsync(existingCandidate);
+            await _cacheService.SetAsync(existingCandidate.Email, existingCandidate, TimeSpan.FromMinutes(10));
             return existingCandidate;
         }
 
@@ -47,6 +57,7 @@ public class CandidateService : ICandidateService
         };
 
         await _candidateRepository.AddCandidateAsync(newCandidate);
+        await _cacheService.SetAsync(newCandidate.Email, newCandidate, TimeSpan.FromMinutes(10));
         return newCandidate;
     }
 }

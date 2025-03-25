@@ -163,8 +163,12 @@ public class CandidateService : ICandidateService
             LastName = dto.LastName,
             PhoneNumber = dto.PhoneNumber,
             Email = dto.Email,
-            CallStartTime = TimeOnly.Parse(dto.CallStartTime),
-            CallEndTime = TimeOnly.Parse(dto.CallEndTime),
+            CallStartTime = string.IsNullOrWhiteSpace(dto.CallStartTime)
+                ? default
+                : TimeOnly.Parse(dto.CallStartTime),
+            CallEndTime = string.IsNullOrWhiteSpace(dto.CallEndTime)
+                ? default
+                : TimeOnly.Parse(dto.CallEndTime),
             LinkedInUrl = dto.LinkedInUrl,
             GitHubUrl = dto.GitHubUrl,
             Comment = dto.Comment

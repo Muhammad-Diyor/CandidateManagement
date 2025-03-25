@@ -18,11 +18,6 @@ public class CandidatesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddOrUpdateCandidate([FromBody] CandidateDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.Email))
-        {
-            return BadRequest("Email is required.");
-        }
-
         var candidate = await _candidateService.AddOrUpdateCandidateAsync(dto);
         return Ok(candidate);
     }
